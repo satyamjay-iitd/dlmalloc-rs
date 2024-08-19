@@ -17,7 +17,7 @@ impl System {
 }
 
 unsafe impl Allocator for System {
-    fn alloc(&self, size: usize) -> (*mut u8, usize, u32) {
+    fn alloc(&mut self, size: usize) -> (*mut u8, usize, u32) {
         let pages = size / self.page_size();
         let prev = wasm::memory_grow(0, pages);
         if prev == usize::max_value() {
@@ -30,16 +30,22 @@ unsafe impl Allocator for System {
         )
     }
 
-    fn remap(&self, _ptr: *mut u8, _oldsize: usize, _newsize: usize, _can_move: bool) -> *mut u8 {
+    fn remap(
+        &mut self,
+        _ptr: *mut u8,
+        _oldsize: usize,
+        _newsize: usize,
+        _can_move: bool,
+    ) -> *mut u8 {
         // TODO: I think this can be implemented near the end?
         ptr::null_mut()
     }
 
-    fn free_part(&self, _ptr: *mut u8, _oldsize: usize, _newsize: usize) -> bool {
+    fn free_part(&mut self, _ptr: *mut u8, _oldsize: usize, _newsize: usize) -> bool {
         false
     }
 
-    fn free(&self, _ptr: *mut u8, _size: usize) -> bool {
+    fn free(&mut self, _ptr: *mut u8, _size: usize) -> bool {
         false
     }
 

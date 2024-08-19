@@ -37,23 +37,23 @@ pub unsafe trait Allocator: Send {
     /// allocate this segment and so should not try to deallocate or merge with others.
     /// This function can return a `std::ptr::null_mut()` when allocation fails (other values of
     /// the triple will be ignored).
-    fn alloc(&self, size: usize) -> (*mut u8, usize, u32);
+    fn alloc(&mut self, size: usize) -> (*mut u8, usize, u32);
 
     /// Remaps system memory region at `ptr` with size `oldsize` to a potential new location with
     /// size `newsize`. `can_move` indicates if the location is allowed to move to a completely new
     /// location, or that it is only allowed to change in size. Returns a pointer to the new
     /// location in memory.
     /// This function can return a `std::ptr::null_mut()` to signal an error.
-    fn remap(&self, ptr: *mut u8, oldsize: usize, newsize: usize, can_move: bool) -> *mut u8;
+    fn remap(&mut self, ptr: *mut u8, oldsize: usize, newsize: usize, can_move: bool) -> *mut u8;
 
     /// Frees a part of a memory chunk. The original memory chunk starts at `ptr` with size `oldsize`
     /// and is turned into a memory region starting at the same address but with `newsize` bytes.
     /// Returns `true` iff the access memory region could be freed.
-    fn free_part(&self, ptr: *mut u8, oldsize: usize, newsize: usize) -> bool;
+    fn free_part(&mut self, ptr: *mut u8, oldsize: usize, newsize: usize) -> bool;
 
     /// Frees an entire memory region. Returns `true` iff the operation succeeded. When `false` is
     /// returned, the `dlmalloc` may re-use the location on future allocation requests
-    fn free(&self, ptr: *mut u8, size: usize) -> bool;
+    fn free(&mut self, ptr: *mut u8, size: usize) -> bool;
 
     /// Indicates if the system can release a part of memory. For the `flags` argument, see
     /// `Allocator::alloc`

@@ -56,7 +56,7 @@ unsafe impl Allocator for System {
     /// chunk of memory, as well as the size of the allocation and some
     /// flags. Since flags are unused on this platform, they will always
     /// be `0`.
-    fn alloc(&self, size: usize) -> (*mut u8, usize, u32) {
+    fn alloc(&mut self, size: usize) -> (*mut u8, usize, u32) {
         let size = if size == 0 {
             4096
         } else if size & 4095 == 0 {
@@ -73,12 +73,18 @@ unsafe impl Allocator for System {
         }
     }
 
-    fn remap(&self, _ptr: *mut u8, _oldsize: usize, _newsize: usize, _can_move: bool) -> *mut u8 {
+    fn remap(
+        &mut self,
+        _ptr: *mut u8,
+        _oldsize: usize,
+        _newsize: usize,
+        _can_move: bool,
+    ) -> *mut u8 {
         // TODO
         ptr::null_mut()
     }
 
-    fn free_part(&self, _ptr: *mut u8, _oldsize: usize, _newsize: usize) -> bool {
+    fn free_part(&mut self, _ptr: *mut u8, _oldsize: usize, _newsize: usize) -> bool {
         false
     }
 
