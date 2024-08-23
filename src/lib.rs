@@ -104,6 +104,10 @@ impl<A> Dlmalloc<A> {
     pub const fn new_with_allocator(sys_allocator: A) -> Dlmalloc<A> {
         Dlmalloc(dlmalloc::Dlmalloc::new(sys_allocator))
     }
+    /// Exposes Allocator
+    pub fn get_allocator(self) -> A {
+        self.0.get_allocator()
+    }
 }
 
 impl<A: Allocator> Dlmalloc<A> {
