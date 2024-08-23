@@ -130,6 +130,10 @@ impl<A> Dlmalloc<A> {
             system_allocator,
         }
     }
+
+    pub fn get_allocator(&mut self) -> &mut A {
+        &mut self.system_allocator
+    }
 }
 
 impl<A: Allocator> Dlmalloc<A> {
