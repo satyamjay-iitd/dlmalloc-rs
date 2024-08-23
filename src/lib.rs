@@ -105,7 +105,7 @@ impl<A> Dlmalloc<A> {
         Dlmalloc(dlmalloc::Dlmalloc::new(sys_allocator))
     }
     /// Exposes Allocator
-    pub fn get_allocator(self) -> A {
+    pub fn get_allocator(&self) -> &A {
         self.0.get_allocator()
     }
 }

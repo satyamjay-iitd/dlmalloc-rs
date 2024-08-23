@@ -131,8 +131,8 @@ impl<A> Dlmalloc<A> {
         }
     }
 
-    pub fn get_allocator(self) -> A {
-        self.system_allocator
+    pub fn get_allocator(&self) -> &A {
+        &self.system_allocator
     }
 }
 
